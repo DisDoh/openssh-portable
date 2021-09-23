@@ -1,4 +1,4 @@
-#	$OpenBSD: sshfp-connect.sh,v 1.4 2021/09/01 00:50:27 dtucker Exp $
+#	$OpenBSD: sshfp-connect.sh,v 1.2 2021/07/19 08:48:33 dtucker Exp $
 #	Placed in the Public Domain.
 
 # This test requires external setup and thus is skipped unless
@@ -24,11 +24,9 @@
 
 tid="sshfp connect"
 
-if ! $SSH -Q key-plain | grep ssh-rsa >/dev/null; then
-	skip "RSA keys not supported."
-elif [ -z "${TEST_SSH_SSHFP_DOMAIN}" ]; then
-	skip "TEST_SSH_SSHFP_DOMAIN not set."
-else
+if [ ! -z "${TEST_SSH_SSHFP_DOMAIN}" ] && \
+    $SSH -Q key-plain | grep ssh-rsa >/dev/null; then
+
 	# Set RSA host key to match fingerprints above.
 	mv $OBJ/sshd_proxy $OBJ/sshd_proxy.orig
 	$SUDO cp $SRC/rsa_openssh.prv $OBJ/host.ssh-rsa
@@ -47,7 +45,7 @@ else
 		trace "sshfp connect $n good fingerprint"
 		host="${n}.dtucker.net"
 		opts="-F $OBJ/ssh_proxy -o VerifyHostKeyDNS=yes "
-		opts="$opts -o HostKeyAlgorithms=rsa-sha2-512,rsa-sha2-256"
+		opts="$opts -o HostKeyAlgorithms=ssh-rsa"
 		host="${n}.${TEST_SSH_SSHFP_DOMAIN}"
 		SSH_CONNECTION=`${SSH} $opts $host 'echo $SSH_CONNECTION'`
 		if [ $? -ne 0 ]; then
@@ -63,4 +61,6 @@ else
 			fail "sshfp-connect succeeded with bad SSHFP record"
 		fi
 	done
+else
+	echo SKIPPED: TEST_SSH_SSHFP_DOMAIN not set.
 fi

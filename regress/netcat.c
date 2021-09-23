@@ -92,7 +92,7 @@
 #define POLL_NETOUT 1
 #define POLL_NETIN 2
 #define POLL_STDOUT 3
-#define BUFSIZE 16384
+#define BUFSIZE 262144
 
 /* Command Line Options */
 int	dflag;					/* detached, no stdin */
@@ -403,7 +403,7 @@ main(int argc, char *argv[])
 			 */
 			else if (uflag && !kflag) {
 				int rv, plen;
-				char buf[16384];
+				char buf[262144];
 				struct sockaddr_storage z;
 
 				len = sizeof(z);

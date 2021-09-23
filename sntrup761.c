@@ -131,7 +131,7 @@ static void uint32_divmod_uint14(uint32 *q,uint16 *r,uint32 x,uint16 m)
   v /= m;
 
   /* caller guarantees m > 0 */
-  /* caller guarantees m < 16384 */
+  /* caller guarantees m < 262144 */
   /* vm <= 2^31 <= vm+m-1 */
   /* xvm <= 2^31 x <= xvm+x(m-1) */
 
@@ -279,7 +279,7 @@ static uint16 int32_mod_uint14(int32 x,uint16 m)
 
 
 /* Decode(R,s,M,len) */
-/* assumes 0 < M[i] < 16384 */
+/* assumes 0 < M[i] < 262144 */
 /* produces 0 <= R[i] < M[i] */
 
 #endif
@@ -309,7 +309,7 @@ static void Decode(uint16 *out,const unsigned char *S,const uint16 *M,long long 
         bottomr[i/2] = S[0]+256*S[1];
         S += 2;
         M2[i/2] = (((m+255)>>8)+255)>>8;
-      } else if (m >= 16384) {
+      } else if (m >= 262144) {
         bottomt[i/2] = 256;
         bottomr[i/2] = S[0];
         S += 1;
@@ -344,13 +344,13 @@ static void Decode(uint16 *out,const unsigned char *S,const uint16 *M,long long 
 
 
 /* Encode(s,R,M,len) */
-/* assumes 0 <= R[i] < M[i] < 16384 */
+/* assumes 0 <= R[i] < M[i] < 262144 */
 
 #endif
 
 /* from supercop-20201130/crypto_kem/sntrup761/ref/Encode.c */
 
-/* 0 <= R[i] < M[i] < 16384 */
+/* 0 <= R[i] < M[i] < 262144 */
 static void Encode(unsigned char *out,const uint16 *R,const uint16 *M,long long len)
 {
   if (len == 1) {
@@ -370,7 +370,7 @@ static void Encode(unsigned char *out,const uint16 *R,const uint16 *M,long long 
       uint32 m0 = M[i];
       uint32 r = R[i]+R[i+1]*m0;
       uint32 m = M[i+1]*m0;
-      while (m >= 16384) {
+      while (m >= 262144) {
         *out++ = r;
         r >>= 8;
         m = (m+255)>>8;
@@ -467,7 +467,7 @@ static Fq Fq_recip(Fq a1)
 
 static int8 Top(Fq C)
 {
-  return (tau1*(int32)(C+tau0)+16384)>>15;
+  return (tau1*(int32)(C+tau0)+262144)>>15;
 }
 
 static Fq Right(int8 T)

@@ -139,7 +139,7 @@ typedef char Char;
 
 #define	GLOB_LIMIT_MALLOC	65536
 #define	GLOB_LIMIT_STAT		2048
-#define	GLOB_LIMIT_READDIR	16384
+#define	GLOB_LIMIT_READDIR	262144
 
 struct glob_lim {
 	size_t	glim_malloc;

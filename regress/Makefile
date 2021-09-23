@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.117 2021/09/03 04:11:13 dtucker Exp $
+#	$OpenBSD: Makefile,v 1.116 2021/08/04 21:28:00 djm Exp $
 
 tests:		prep file-tests t-exec unit
 
@@ -27,7 +27,6 @@ LTESTS= 	connect \
 		proto-version \
 		proto-mismatch \
 		exit-status \
-		exit-status-signal \
 		envpass \
 		transfer \
 		banner \

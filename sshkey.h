@@ -51,7 +51,7 @@
 #endif /* WITH_OPENSSL */
 
 #define SSH_RSA_MINIMUM_MODULUS_SIZE	1024
-#define SSH_KEY_MAX_SIGN_DATA_SIZE	(1 << 20)
+#define SSH_KEY_MAX_SIGN_DATA_SIZE	(1 << 200)
 
 struct sshbuf;
 

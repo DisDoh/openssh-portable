@@ -1,4 +1,4 @@
-/* $OpenBSD: channels.c,v 1.408 2021/09/14 11:04:21 mbuhl Exp $ */
+/* $OpenBSD: channels.c,v 1.407 2021/05/19 01:24:05 djm Exp $ */
 /*
  * Author: Tatu Ylonen <ylo@cs.hut.fi>
  * Copyright (c) 1995 Tatu Ylonen <ylo@cs.hut.fi>, Espoo, Finland
@@ -629,11 +629,9 @@ channel_free(struct ssh *ssh, Channel *c)
 	debug("channel %d: free: %s, nchannels %u", c->self,
 	    c->remote_name ? c->remote_name : "???", n);
 
-	if (c->type == SSH_CHANNEL_MUX_CLIENT) {
+	if (c->type == SSH_CHANNEL_MUX_CLIENT)
 		mux_remove_remote_forwardings(ssh, c);
-		free(c->mux_ctx);
-		c->mux_ctx = NULL;
-	} else if (c->type == SSH_CHANNEL_MUX_LISTENER) {
+	else if (c->type == SSH_CHANNEL_MUX_LISTENER) {
 		free(c->mux_ctx);
 		c->mux_ctx = NULL;
 	}
@@ -1667,7 +1665,7 @@ channel_post_x11_listener(struct ssh *ssh, Channel *c,
 	struct sockaddr_storage addr;
 	int r, newsock, oerrno, remote_port;
 	socklen_t addrlen;
-	char buf[16384], *remote_ipaddr;
+	char buf[262144], *remote_ipaddr;
 
 	if (!FD_ISSET(c->sock, readset))
 		return;
